@@ -1,6 +1,7 @@
 package main;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class ProyectoDalgo {
@@ -21,6 +22,13 @@ public class ProyectoDalgo {
         public void agregarVertice(Vertice vertice){
             this.vertices.add(vertice);
         }
+        public void quitarVertice(Vertice vertice) {
+            if (this.vertices.contains(vertice))
+            {
+                this.vertices.remove(vertice);
+            }
+        }
+         
     }
     
     public class Arista{
@@ -38,10 +46,12 @@ public class ProyectoDalgo {
         boolean robot;
         boolean poder;
         int id;
+        int pesoPoder;
         public Vertice(int id){
             this.id = id;
             this.robot = false;
             this.poder = false;
+            
         }
     }
 
@@ -52,7 +62,45 @@ public class ProyectoDalgo {
             //inicio prueba
             int numPlat = scanner.nextInt();
             int energia = scanner.nextInt();
-            
+            String linea = scanner.nextLine();
+            List<Integer> robots = new ArrayList<>();
+            for (String s : linea.split("\\s+")) {
+                robots.add(Integer.parseInt(s));
+            }
+            List<Integer> plataPoder = new ArrayList<>();
+            List<Integer> pesosPoder = new ArrayList<>();
+            while(scanner.hasNext()){
+                int plataformaPoder = scanner.nextInt();
+                int pesoPoder = scanner.nextInt();
+                plataPoder.add(plataformaPoder);
+                pesosPoder.add(pesoPoder);
+            }
+            //crear lista de vertices
+            //meter el nodo -1 donde inicia samus
+            List<Vertice> verts  = new ArrayList<>();
+            for(int e = 0;e<=numPlat;e++){
+                if(plataPoder.contains(e)){
+                    int peso = pesosPoder.get(plataPoder.indexOf(e));
+                    Vertice vertice = new ProyectoDalgo().new Vertice(e);
+                    vertice.pesoPoder = peso;
+                    vertice.poder = true;
+                    verts.add(vertice);
+                }else if(robots.contains(e)){
+                        Vertice vertice = new ProyectoDalgo().new Vertice(e);
+                        vertice.robot = true;
+                        verts.add(vertice);
+                    }
+                 else{ 
+                    Vertice vertice = new ProyectoDalgo().new Vertice(e);
+                    verts.add(vertice);
+                }
+            }
+            //crear lista de aristas
+        //empezar implementacion de bfs
+        //implementar la logica de la matriz
+        //funcion de traduccion para salida.
+
+
         }
         scanner.close();
     }
