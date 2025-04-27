@@ -28,6 +28,7 @@ public class ProyectoDalgo {
                 this.vertices.remove(vertice);
             }
         }
+        //empezar implementacion de bfs
          
     }
     
@@ -64,6 +65,7 @@ public class ProyectoDalgo {
             int numPlat = scanner.nextInt();
             int energia = scanner.nextInt();
             String linea = scanner.nextLine();
+            //lista de los vertices que tienen robots
             List<Integer> robots = new ArrayList<>();
             for (String s : linea.split("\\s+")) {
                 robots.add(Integer.parseInt(s));
@@ -90,9 +92,9 @@ public class ProyectoDalgo {
                     vertice.poder = true;
                     verts.add(vertice);
                 }else if(robots.contains(e)){
-                        Vertice vertice = new ProyectoDalgo().new Vertice(e);
-                        vertice.robot = true;
-                        verts.add(vertice);
+                    Vertice vertice = new ProyectoDalgo().new Vertice(e);
+                    vertice.robot = true;
+                    verts.add(vertice);
                     }
                  else{ 
                     Vertice vertice = new ProyectoDalgo().new Vertice(e);
@@ -100,8 +102,28 @@ public class ProyectoDalgo {
                 }
             }
             //crear lista de aristas
-        //empezar implementacion de bfs
-        //implementar la logica de la matriz
+            List<Arista> aristas = new ArrayList<>();
+            if(verts.size()>1){
+                Arista a0 = new ProyectoDalgo().new Arista(v0, verts.get(1), 1);
+                Arista a0p = new ProyectoDalgo().new Arista(verts.get(1),v0, 1);
+                aristas.add(a0);
+                aristas.add(a0p);
+            }
+            for (int j=1;j<verts.size();j++){
+                //es una arista normal
+                if(!verts.get(j).poder && !verts.get(j).robot){
+                    //verificar si hago un camino al siguiente vertice y este es normal
+                    if(!verts.get(j+1).robot){
+                        Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(j+1), 1);
+                        Arista a2 = new ProyectoDalgo().new Arista(verts.get(j+1), verts.get(j), 1);
+
+                    }
+                }
+            }
+            Grafo grafo = new ProyectoDalgo().new Grafo(verts.size(), aristas.size());
+            grafo.aristas = aristas;
+            grafo.vertices = verts;
+
         //funcion de traduccion para salida.
 
 
