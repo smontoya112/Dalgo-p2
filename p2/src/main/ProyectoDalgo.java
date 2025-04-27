@@ -47,11 +47,12 @@ public class ProyectoDalgo {
         boolean poder;
         int id;
         int pesoPoder;
+        int energiaDisponible;
         public Vertice(int id){
             this.id = id;
             this.robot = false;
             this.poder = false;
-            
+            this.energiaDisponible = 0;
         }
     }
 
@@ -76,8 +77,11 @@ public class ProyectoDalgo {
                 pesosPoder.add(pesoPoder);
             }
             //crear lista de vertices
-            //meter el nodo -1 donde inicia samus
             List<Vertice> verts  = new ArrayList<>();
+            //meter el nodo -1 donde inicia samus
+            Vertice v0 = new ProyectoDalgo().new Vertice(-1);
+            v0.energiaDisponible = energia;
+            verts.add(v0);
             for(int e = 0;e<=numPlat;e++){
                 if(plataPoder.contains(e)){
                     int peso = pesosPoder.get(plataPoder.indexOf(e));
