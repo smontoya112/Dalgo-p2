@@ -2,6 +2,8 @@ package main;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class ProyectoDalgo {
@@ -28,7 +30,13 @@ public class ProyectoDalgo {
                 this.vertices.remove(vertice);
             }
         }
+        
         //empezar implementacion de bfs
+        public Grafo bfs(Grafo grafo){
+            Queue cola = new PriorityQueue<>();
+            
+            return null;
+        }
          
     }
     
@@ -103,7 +111,7 @@ public class ProyectoDalgo {
             }
             //crear lista de aristas
             List<Arista> aristas = new ArrayList<>();
-            if(verts.size()>1){
+            if(verts.size()>1 && !verts.get(1).robot){
                 Arista a0 = new ProyectoDalgo().new Arista(v0, verts.get(1), 1);
                 Arista a0p = new ProyectoDalgo().new Arista(verts.get(1),v0, 1);
                 aristas.add(a0);
@@ -113,10 +121,28 @@ public class ProyectoDalgo {
                 //es una arista normal
                 if(!verts.get(j).poder && !verts.get(j).robot){
                     //verificar si hago un camino al siguiente vertice y este es normal
-                    if(!verts.get(j+1).robot){
+                    if(!verts.get(j+1).robot && !verts.get(j+1).poder){
                         Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(j+1), 1);
                         Arista a2 = new ProyectoDalgo().new Arista(verts.get(j+1), verts.get(j), 1);
-
+                        aristas.add(a1);
+                        aristas.add(a2);
+                    }
+                    //si el siguente nodo es un poder, se puede o no usar el poder
+                    else if(verts.get(j+1).poder){
+                        Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(j+1), 1);
+                        Arista a2 = new ProyectoDalgo().new Arista(verts.get(j+1), verts.get(j), 1);
+                        aristas.add(a1);
+                        aristas.add(a2);
+                    }
+                }else if(verts.get(j).poder){
+                    int peso = verts.get(j).pesoPoder;
+                    if(j-peso>=0 && !verts.get(j-peso).robot){
+                        Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(j-peso), 1);
+                        aristas.add(a1);
+                    }
+                    if(j+peso<=verts.size() && !verts.get(j+peso).robot){
+                        Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(j+peso), 1);
+                        aristas.add(a1);
                     }
                 }
             }
@@ -125,7 +151,7 @@ public class ProyectoDalgo {
             grafo.vertices = verts;
 
         //funcion de traduccion para salida.
-
+        
 
         }
         scanner.close();
