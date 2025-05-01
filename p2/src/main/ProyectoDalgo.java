@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.LinkedList;
 
 public class ProyectoDalgo {
     public class Grafo{
@@ -37,17 +38,51 @@ public class ProyectoDalgo {
             
             return null;
         }
-         
+
+        public List<Vertice> bfs(Grafo grafo, Vertice vInicio) {
+            List<Vertice> recorrido = new ArrayList<>();
+            boolean[] visitado = new boolean[numVertices + 2]; // +2 por el vértice -1
+            Queue<Vertice> cola = new LinkedList<>();
+        
+        
+            cola.add(vInicio);
+            visitado[vInicio.id + 1] = true; // para que -1 se mapee a 0, 0 a 1, etc.
+        
+            while (!cola.isEmpty()) {
+                Vertice actual = cola.poll();
+                recorrido.add(actual);
+        
+                // Buscar adyacentes desde las aristas
+                for (Arista a : aristas) {
+                    Vertice vecino = null;
+                    if (a.origen.id == actual.id) {
+                        vecino = a.destino;
+                    } else if (a.destino.id == actual.id) {
+                        vecino = a.origen;
+                    }
+        
+                    if (vecino != null && !visitado[vecino.id + 1]) {
+                        cola.add(vecino);
+                        visitado[vecino.id + 1] = true;
+                    }
+                }
+            }
+        
+            return recorrido;
+        }
+        
     }
     
     public class Arista{
         Vertice origen;
         Vertice destino;
         int peso;
+        boolean tp = false;
         public Arista(Vertice origen, Vertice destino, int peso){
             this.origen = origen;
             this.destino = destino;
             this.peso = peso;
+
         }
     }
 
@@ -110,6 +145,7 @@ public class ProyectoDalgo {
                 }
             }
             //crear lista de aristas
+            int indiceUltimo = 0;
             List<Arista> aristas = new ArrayList<>();
             if(verts.size()>1 && !verts.get(1).robot){
                 Arista a0 = new ProyectoDalgo().new Arista(v0, verts.get(1), 1);
@@ -145,6 +181,28 @@ public class ProyectoDalgo {
                         aristas.add(a1);
                     }
                 }
+
+                if(!verts.get(j).robot)
+                {
+                    if (j - indiceUltimo > 1) 
+                    {
+                        {
+                        int peso =  j-indiceUltimo;
+                        Arista a1 = new ProyectoDalgo().new Arista(verts.get(j), verts.get(indiceUltimo), peso);
+                        Arista a2 = new ProyectoDalgo().new Arista(verts.get(indiceUltimo), verts.get(j), peso);
+                        a1.tp = true;
+                        a2.tp = true;
+                        aristas.add(a1);
+                        aristas.add(a2);
+                    }
+                    if(j + 1 < verts.size())
+                    {
+                        if(verts.get(j+1).robot){
+                            indiceUltimo = j;
+                        }
+                    }
+
+                }
             }
             Grafo grafo = new ProyectoDalgo().new Grafo(verts.size(), aristas.size());
             grafo.aristas = aristas;
@@ -156,4 +214,5 @@ public class ProyectoDalgo {
         }
         scanner.close();
     }
+}
 }
