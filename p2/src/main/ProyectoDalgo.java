@@ -1,6 +1,8 @@
 package main;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -33,10 +35,35 @@ public class ProyectoDalgo {
         }
         
         //empezar implementacion de bfs
-        public Grafo bfs(Grafo grafo){
-            Queue cola = new PriorityQueue<>();
-            
-            return null;
+        public List<Vertice> bfs(Grafo grafo, Vertice vInicio) {
+            List<Vertice> recorrido = new ArrayList<>();
+            boolean[] visitado = new boolean[numVertices + 2]; // +2 por el vértice -1
+            Queue<Vertice> cola = new LinkedList<>();
+
+            cola.add(vInicio);
+            visitado[vInicio.id + 1] = true; // para que -1 se mapee a 0, 0 a 1, etc.
+
+            while (!cola.isEmpty()) {
+                Vertice actual = cola.poll();
+                recorrido.add(actual);
+        
+                // Buscar adyacentes desde las aristas
+                for (Arista a : aristas) {
+                    Vertice vecino = null;
+                    if (a.origen.id == actual.id) {
+                        vecino = a.destino;
+                    } else if (a.destino.id == actual.id) {
+                        vecino = a.origen;
+                    }
+        
+                    if (vecino != null && !visitado[vecino.id + 1]) {
+                        cola.add(vecino);
+                        visitado[vecino.id + 1] = true;
+                    }
+                }
+            }
+        
+            return recorrido;
         }
 
         public List<Vertice> bfs(Grafo grafo, Vertice vInicio) {
